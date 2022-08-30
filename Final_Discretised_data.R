@@ -13,16 +13,16 @@ discretiseFunction <- function(matrix){
     #sort data and get standared dev
     colData<-matrix[,grandColIndex]
     sortedData <- sort(colData)
-    length <- length(sortedData)
+    sortedLength <- length(sortedData)
     
     #create temp matrix
-    sortedMatrix <- matrix(data=NA, nrow=length, ncol=3)
+    sortedMatrix <- matrix(data=NA, nrow=sortedLength, ncol=3)
     
     #Loop over ordered data and find the difference
     index <- 1
     for (num in sortedData){
       
-      if(index < length){
+      if(index < sortedLength){
         difference <- (num - sortedData[index+1])*-1
         print(difference)
         sortedMatrix[index, 1] <- num
@@ -36,7 +36,7 @@ discretiseFunction <- function(matrix){
     }
     
     #Find the Standard Deviation of difference data
-    differenceData <- sortedMatrix[1:length-1,2]
+    differenceData <- sortedMatrix[1:sortedLength-1,2]
     standardDeviation <- 2* sd(differenceData)
     print(standardDeviation)
     # Loop over data and assign coding
@@ -44,13 +44,13 @@ discretiseFunction <- function(matrix){
     characterCoding <- 0
     sortedMatrix[1,3]<- 0
     
-    for (row in sortedMatrix[1:length-1,2]){
+    for (row in sortedMatrix[1:sortedLength-1,2]){
       if(row > standardDeviation){
         characterCoding <- characterCoding+1
       }
       sortedMatrix[newIndex+1, 3] <- characterCoding
       newIndex <- newIndex + 1
-      if(newIndex == length){
+      if(newIndex == sortedLength){
         newIndex <-1
       }
     }
